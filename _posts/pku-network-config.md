@@ -144,6 +144,13 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
     $ wget -O /etc/chinadns_chnroute.txt --no-check-certificate https://gist.githubusercontent.com/lsylsy2/fe94ca41a8f52b78772e/raw/e51449a7d76d153d3df6934d285d7871cb0862ae/cidr_merge
 
+随后修改dnsmasq的配置，将ChinaDNS设置为dnsmasq的上游服务器：
+
+    $ uci set dhcp.@dnsmasq[-1].noresolv='1'
+    $ uci set dhcp.@dnsmasq[-1].local='127.0.0.1#5353'
+    $ uci delete dhcp.@dnsmasq[-1].server
+    $ uci commit dhcp
+
 配置校园网自动登录，修改`/etc/rc.local`：
 
     $ vi /etc/rc.local
