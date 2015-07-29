@@ -97,7 +97,7 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
     config dhcp 'wan'
         option interface 'wan'
-        option ignore '1'
+        option ignore '0'
         option ndp 'relay'
         option ra 'relay'
         option master '1'
@@ -143,6 +143,10 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 或者是直接下载修改好的版本：
 
     $ wget -O /etc/chinadns_chnroute.txt --no-check-certificate https://gist.githubusercontent.com/lsylsy2/fe94ca41a8f52b78772e/raw/e51449a7d76d153d3df6934d285d7871cb0862ae/cidr_merge
+
+并为chinaDNS添加例外：
+
+    $ echo "114.114.114.114/32" >> /etc/chinadns_chnroute.txt
 
 随后修改dnsmasq的配置，将ChinaDNS设置为dnsmasq的上游服务器：
 
