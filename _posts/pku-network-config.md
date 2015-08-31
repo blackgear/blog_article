@@ -54,7 +54,7 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
     $ echo "deb http://shadowvpn.org/debian wheezy main" >> /etc/apt/sources.list
     $ apt-get update
-    $ apt-get install shadowsocks-libev
+    $ apt-get install shadowvpn
 
 修改ShadowVPN的配置文件：
 
@@ -151,8 +151,7 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 随后修改dnsmasq的配置，将ChinaDNS设置为dnsmasq的上游服务器：
 
     $ uci set dhcp.@dnsmasq[-1].noresolv='1'
-    $ uci set dhcp.@dnsmasq[-1].local='127.0.0.1#5353'
-    $ uci delete dhcp.@dnsmasq[-1].server
+    $ uci set dhcp.@dnsmasq[-1].server='127.0.0.1#5353'
     $ uci commit dhcp
 
 配置校园网自动登录，修改`/etc/rc.local`：
