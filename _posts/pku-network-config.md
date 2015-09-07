@@ -60,7 +60,7 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
     $ vi /etc/shadowvpn/server.conf
 
-将`server`设置为`::0`以监听IPv6地址，将`port`设置为`53`以绕过QoS限速，将`mtu`设置为`1420`以适配IPv6网络，设置一个复杂的密码。重启ShadowVPN使设置生效：
+将`server`设置为`::0`以监听IPv6地址，将`port`设置为`53`以绕过QoS限速，将`mtu`设置为`1412`以适配IPv6网络，修改`password`设置一个复杂的密码，根据实例修改`user_token`以提供多用户功能，重启ShadowVPN使设置生效：
 
     $ service shadowvpn restart
 
@@ -106,15 +106,18 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
     $ vi /etc/config/shadowvpn
     config shadowvpn
-        option enable '1'
         option concurrency '1'
         option intf 'tun0'
-        option port '53'
-        option password '密码'
-        option mtu '1420'
         option server '服务器IPv6地址'
+        option port '53'
+        option user_token '用户token'
+        option password '用户密码'
         option route_mode '1'
         option route_file '/etc/chinadns_chnroute.txt'
+        option net '10.7.0.1/31'
+        option route_mode_save '1'
+        option mtu '1412'
+        option enable '1'
 
 配置ChinaDNS：
 
