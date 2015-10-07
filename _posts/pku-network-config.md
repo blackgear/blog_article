@@ -17,7 +17,7 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
 路由器信息：
 
-> Mercury 4530R OpenWrt BarrierBreaker 14.07
+> Mercury 4530R OpenWrt Chaos Calmer 15.05
 > 560MHz CPU
 > 16M Flash
 > Ar71xx Generic
@@ -68,17 +68,29 @@ tags: [shadowvpn, chinadns, openwrt, debian]
 
 ## 路由器的配置
 
-路由器使用OpenWrt BarrierBreaker 14.07初始系统，第一次启动时先通过telnet进行访问并修改root用户密码，再通过ssh登录：
+路由器使用OpenWrt Chaos Calmer 15.05原版系统，第一次启动时先通过telnet进行访问并修改root用户密码，再通过ssh登录：
 
     $ telnet 192.168.1.1
     $ passwd
     $ exit
     $ ssh root@192.168.1.1
 
-在配置前，首先添加软件源进行系统更新，并安装软件包：
+在配置前，首先添加软件源，由于shadowVPN的源尚未添加包签名，故需要关闭包签名检查，进行系统更新，并安装软件包：
 
-    $ echo "src/gz openwrt_dist http://openwrt-dist.sourceforge.net/releases/ar71xx/packages" >> /etc/opkg.conf
-    $ echo "src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/releases/luci/packages" >> /etc/opkg.conf
+    $ cat << _EOF_ > /etc/opkg.conf
+    dest root /
+    dest ram /tmp
+    lists_dir ext /var/opkg-lists
+    option overlay_root /overlay
+    src/gz chaos_calmer_base http://downloads.openwrt.org/chaos_calmer/15.05/ar71xx/generic/packages/base
+    src/gz chaos_calmer_luci http://downloads.openwrt.org/chaos_calmer/15.05/ar71xx/generic/packages/luci
+    src/gz chaos_calmer_packages http://downloads.openwrt.org/chaos_calmer/15.05/ar71xx/generic/packages/packages
+    src/gz chaos_calmer_routing http://downloads.openwrt.org/chaos_calmer/15.05/ar71xx/generic/packages/routing
+    src/gz chaos_calmer_telephony http://downloads.openwrt.org/chaos_calmer/15.05/ar71xx/generic/packages/telephony
+    src/gz chaos_calmer_management http://downloads.openwrt.org/chaos_calmer/15.05/ar71xx/generic/packages/management
+    src/gz openwrt_dist http://openwrt-dist.sourceforge.net/releases/ar71xx/packages
+    src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/releases/luci/packages
+    _EOF_
     $ opkg update
     $ opkg list-upgradable | cut -d " " -f1 | xargs -r opkg upgrade
     $ opkg install ShadowVPN ChinaDNS wget
@@ -91,13 +103,14 @@ tags: [shadowvpn, chinadns, openwrt, debian]
         option start '100'
         option limit '150'
         option leasetime '12h'
-        option dhcpv6 'server'
+        option dhcpv6 'relay'
         option ndp 'relay'
         option ra 'relay'
 
     config dhcp 'wan'
         option interface 'wan'
         option ignore '0'
+        option dhcpv6 'relay'
         option ndp 'relay'
         option ra 'relay'
         option master '1'
