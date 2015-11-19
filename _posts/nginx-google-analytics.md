@@ -45,7 +45,11 @@ Nginx自带的`userid`模块可以用于标记各个用户，而`post_action`配
 
     location @tracker {
         internal;
+        proxy_method GET;
         proxy_pass https://ssl.google-analytics.com/collect?v=1&tid=UA-XXXXXXXX-Y&$uid_set$uid_got&t=pageview&dh=$host&dp=$uri&uip=$remote_addr&z=$msec;
+        proxy_set_header User-Agent $http_user_agent;
+        proxy_pass_request_headers off;
+        proxy_pass_request_body off;
     }
 
     location / {
