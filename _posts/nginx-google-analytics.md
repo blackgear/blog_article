@@ -46,7 +46,7 @@ Nginx自带的`userid`模块可以用于标记各个用户，而`post_action`配
     location @tracker {
         internal;
         proxy_method GET;
-        proxy_pass https://ssl.google-analytics.com/collect?v=1&tid=UA-XXXXXXXX-Y&$uid_set$uid_got&t=pageview&dh=$host&dp=$uri&uip=$remote_addr&z=$msec;
+        proxy_pass https://ssl.google-analytics.com/collect?v=1&tid=UA-XXXXXXXX-Y&$uid_set$uid_got&t=pageview&dh=$host&dp=$uri&uip=$remote_addr&dr=$http_referer&z=$msec;
         proxy_set_header User-Agent $http_user_agent;
         proxy_pass_request_headers off;
         proxy_pass_request_body off;
@@ -59,16 +59,16 @@ Nginx自带的`userid`模块可以用于标记各个用户，而`post_action`配
 
 `userid`模块将会在用户访问时检查cookies中是否有`cid`项，如果没有`cid`项，则会在返回的header中加入`set-cookies`头标记这个用户，并将`$uid_set`变量设定为`cid=XXXXXX`这一形式，将`$uid_got`变量设定为空。如果有`cid`项，则将`$uid_got`变量设定为`cid=XXXXXX`这一形式，将`$uid_set`变量设定为空。于是在`@tracker`部分，上述变量会将`$uid_set$uid_got`填充为`cid=XXXXXX`。
 
-实际向Google Analytics提交数据时，`tid`为跟踪ID，即类似`UA-123456-1`的用于区别是要向哪个 Google Analytics（分析）媒体资源发送数据的参数，可以从Google Analytics获得；`cid`即客户端ID，以cookies的形式用于区分和追踪用户，这里通过`userid`模块完成；`t`、`dh`、`dp`参数用于标记事件类型，访问的网站与访问的路径；`uip`参数即用户的IP地址，用于追踪用户所处地区等信息；`z`参数没有实际意义，仅仅用于附加一个时间戳以防止向Google Analytics提交数据时，这个请求被缓存。
+实际向Google Analytics提交数据时，`tid`为跟踪ID，即类似`UA-123456-1`的用于区别是要向哪个 Google Analytics（分析）媒体资源发送数据的参数，可以从Google Analytics获得；`cid`即客户端ID，以cookies的形式用于区分和追踪用户，这里通过`userid`模块完成；`t`、`dh`、`dp`参数用于标记事件类型，访问的网站与访问的路径；`uip`参数即用户的IP地址，用于追踪用户所处地区等信息；`dr`参数即用户的referer，用于追踪用户的来源信息；`z`参数没有实际意义，仅仅用于附加一个时间戳以防止向Google Analytics提交数据时，这个请求被缓存。
 
 ## 注意事项
 
 在配置监听IPv6和IPv4时，有两种配置方式：
 
-    listen [::]:443 ssl http2 fastopen=3 reuseport ipv6only=off;
+    listen [::]:80 ipv6only=off;
 
-    listen 443 ssl http2 fastopen=3 reuseport;
-    listen [::]:443 ssl http2 fastopen=3 reuseport ipv6only=on;
+    listen 80;
+    listen [::]:80 ipv6only=on;
 
 如果使用前者，那么`remote_addr`变量将会被表示为[IPv4-mapped IPv6 addresses](https://en.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses)即`::ffff:123.123.123.123`这样的形式，如果使用后者，那么`remote_addr`变量将会被表示为`123.123.123.123`这样的正常的形式。
 
@@ -76,11 +76,43 @@ Google Analytics对IP会进行匿名化处理，将`::ffff:123.123.123.123`处�
 
 ## 调试方法
 
-如果希望提交更多数据，并对这一过程进行调试，可以修改`proxy_pass`路径到服务器自身上的某处，并使用`access_log`记录将提交的数据，然后通过`curl`向Google Analytics的调试服务器手动提交信息：
+如果希望提交更多数据，并对这一过程进行调试，最简单的方法是首先将配置文件中的`proxy_pass`部分网址从`https://ssl.google-analytics.com/`修改为`http://127.0.0.1:9999`，再在服务器上使用`nc`监听服务器上的9999端口：
 
-    $ curl --user-agent "Mozilla/4.0" --referer https://google.com "https://www.google-analytics.com/debug/collect?v=1&dp=/index.html&dh=example.com&tid=UA-123456-1&cid=XXXXXX&uip=123.123.123.123&t=pageview"
+    $ nc -k -l 0.0.0.0 9999
 
-Google Analytics的调试服务器会返回关于此次提交的详细信息，包括参数是否有错误、如何修正等，可以通过检查返回信息来确定配置是否正常。而Google Analytics的正常服务器只会返回HTTP状态码，难以进行调试。
+从本机访问该网站网站，就能从`nc`上看到本来将被提交到Google Analytics上的信息了，如：
+
+    GET /collect?v=1&tid=UA-XXXXXX-Y&cid=XXXXXX&t=pageview&dh=example.com&dp=/index.html&uip=123.123.123.123&dr=https://google.com&z=1448000000.000 HTTP/1.0
+    User-Agent: Mozilla/4.0
+    Host: 127.0.0.1:9999
+    Connection: close
+
+随后通过`curl`向Google Analytics的调试服务器手动提交信息：
+
+    $ curl --user-agent "Mozilla/4.0" "https://www.google-analytics.com/debug/collect?v=1&tid=UA-XXXXXX-Y&cid=XXXXXX&t=pageview&dh=example.com&dp=/index.html&uip=123.123.123.123&dr=https://google.com&z=1448000000.000"
+
+Google Analytics的调试服务器会返回关于此次提交的详细信息，包括参数是否有错误、如何修正等，可以通过检查返回信息来确定配置是否正常，提交到此服务器上的数据并不会被记录到Google Analytics中。而Google Analytics的正常服务器只会返回HTTP状态码，难以进行调试。
+
+手动提交上述信息后Google Analytics的返回如下：
+
+    {
+      "hitParsingResult": [ {
+        "valid": false,
+        "parserMessage": [ {
+          "messageType": "ERROR",
+          "description": "The value provided for parameter 'tid' is invalid. Please see http://goo.gl/a8d4RP#tid for details.",
+          "messageCode": "VALUE_INVALID",
+          "parameter": "tid"
+        } ],
+        "hit": "/debug/collect?v=1\u0026tid=UA-XXXXXX-Y\u0026cid=XXXXXX\u0026t=pageview\u0026dh=example.com\u0026dp=/index.html\u0026uip=123.123.123.123\u0026dr=https://google.com\u0026z=1448000000.000?_anon_uip=123.123.123.0"
+      } ],
+      "parserMessage": [ {
+        "messageType": "INFO",
+        "description": "Found 1 hit in the request."
+      } ]
+    }
+
+明显可以看出此处的错误是`tid`参数错误，显然作为例子的`UA-XXXXXX-Y`并不是一个正确的`tid`，更换成实际的`tid`之后这个错误就被修复了。
 
 ## DNT功能
 
@@ -95,4 +127,4 @@ Google Analytics的调试服务器会返回关于此次提交的详细信息，�
         }
     }
 
-尽管如此，受Nginx程序本身的限制`userid`模块依旧会用cookies对用户进行标记，没有办法通过检测DNT头的方式来关闭它。
+尽管如此，受Nginx程序本身的限制`userid`模块依旧会用cookies对用户进行标记，没有办法通过检测DNT头的方式来关闭它，但用户数据并不会被提交到Google Analytics上。
