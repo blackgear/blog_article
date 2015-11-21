@@ -12,8 +12,8 @@ tags: [hexo, nginx, ssl]
 
 在Nginx配置项中加入http2即可完成：
 
-        listen 443 default_server ssl http2 fastopen=3 reuseport;
-        listen [::]:443 default_server ssl http2 fastopen=3 reuseport ipv6only=on;
+    listen 443 default_server ssl http2 fastopen=3 reuseport;
+    listen [::]:443 default_server ssl http2 fastopen=3 reuseport ipv6only=on;
 
 ## 配置Gzip
 
@@ -118,6 +118,7 @@ tags: [hexo, nginx, ssl]
 
 以上的优化集中在加速后续多次访问，而当第一次访问网页时，js文件和css文件可能阻碍网页加载与渲染，为js文件链接添加`defer`关键字以防止js文件阻碍网页的加载与渲染。使用link元素的`media`属性使网页内容优先渲染显示，待css文件加载完成之后触发reflow重新渲染网页。
 
+    <script src="/example" defer="defer">
     <link rel="stylesheet" type="text/css" href="/example.css" media="none" onload="media='all'">
     <noscript><link rel="stylesheet" type="text/css" href="/example.css"></noscript>
 
