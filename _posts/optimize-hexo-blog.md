@@ -2,6 +2,7 @@ title: Hexo博客的访问速度相关配置优化
 date: 2015-05-31 00:40:30
 categories: network
 tags: [hexo, nginx, ssl]
+description: 本文介绍了优化使用Nginx和Hexo建立的博客的访问速度与渲染速度的方法。
 ---
 
 ## 总体思路

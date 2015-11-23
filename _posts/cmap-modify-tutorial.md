@@ -2,6 +2,7 @@ title: CMap表相关修改技术简要指南
 date: 2015-07-10 02:00:00
 categories: font
 tags: [font, ttx, cmap]
+description: 本文介绍了如何使用ttx修改字体的cmap表，以增强字体在不同操作系统中的兼容性。
 ---
 
 ## 基本信息

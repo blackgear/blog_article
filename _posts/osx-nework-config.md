@@ -2,6 +2,7 @@ title: OS X下的科学上网完整配置方案
 date: 2015-09-30 01:00:00
 categories: network
 tags: [osx, shadowsocks, polipo]
+description: 本文介绍了在OS X下进行从普通应用程序到命令行程序的完整科学上网配置方案。
 ---
 
 ## 相关说明

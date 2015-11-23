@@ -1,8 +1,11 @@
 title: Ocserv在Debian下的安装与配置指南
 date: 2014-12-18 06:40:35
 categories: network
-tags: [ocserv, debian]
+tags: [ocserv, debian, anyconnect]
+description: 本文介绍了在Debian下配置Ocserv并启用证书登录与路由分流等优化措施的方案。
 ---
+
+# Ocserv在Debian下的安装与配置指南
 
 ## 相关说明
 
@@ -60,11 +63,16 @@ tags: [ocserv, debian]
 
 下载ocserv并编译：
 
-    $ wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.5.tar.xz
-    $ tar Jxvf ocserv-0.10.5.tar.xz
-    $ cd ocserv-0.10.5
-    $ ./configure --prefix=/usr --sysconfdir=/etc --enable-static
+    $ cd /tmp
+    $ ocserv_version=$(wget -qO- http://www.infradead.org/ocserv/download.html | grep -o '[0-9]*\.[0-9]*\.[0-9]*')
+    $ wget ftp://ftp.infradead.org/pub/ocserv/ocserv-$ocserv_version.tar.xz -O ocserv.tar.xz
+    $ tar -Jxvf ocserv.tar.xz
+    $ cd ./ocserv-*
+    $ sed -i "s/#define MAX_CONFIG_ENTRIES 96/#define MAX_CONFIG_ENTRIES 200/g" ./src/vpn.h
+    $ ./configure --prefix=/usr --sysconfdir=/etc --without-pam --without-radius
     $ make && make install
+    $ cd ~
+    $ rm -rf /tmp/ocserv*
 
 ## 配置说明
 

@@ -2,6 +2,7 @@ title: Nginx内配置Google Analytics指南
 date: 2015-10-30 17:30:00
 categories: network
 tags: [nginx, google, analytics]
+description: 本文介绍了通过使用Nginx自带的功能，将统计数据发送到Google Analytics的方法。
 ---
 
 ## 相关说明

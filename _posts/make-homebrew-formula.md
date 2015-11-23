@@ -1,7 +1,8 @@
 title: Homebrew软件包的编写与提交
 date: 2015-04-04 00:18:00
 categories: network
-tags: [homebrew, formula]
+tags: [homebrew, formula, debug]
+description: 本文介绍了更新以及创建一个Homebrew里的软件包，并进行调试和发布的方法。
 ---
 
 ## 相关说明
