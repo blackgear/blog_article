@@ -1,7 +1,7 @@
 title: 基于高性能Pac实现智能代理
 date: 2015-02-12 14:00:00
 categories: network
-tags: [pac, openwrt, js]
+tags: [pac, openwrt, javascript]
 description: 本文介绍了编写具备高性能和小体积的基于IP进行分流的Pac脚本的方法。
 ---
 
