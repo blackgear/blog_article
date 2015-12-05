@@ -5,8 +5,6 @@ tags: [ocserv, debian, anyconnect]
 description: 本文介绍了在Debian下配置Ocserv并启用证书登录与路由分流等优化措施的方案。
 ---
 
-# Ocserv在Debian下的安装与配置指南
-
 ## 相关说明
 
 服务器信息：
