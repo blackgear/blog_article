@@ -21,27 +21,21 @@ description: 本文介绍了优化使用Nginx和Hexo建立的博客的访问速�
 在nginx配置文件中加入：
 
     gzip on;
+    gzip_static on;
     gzip_http_version 1.1;
     gzip_vary on;
     gzip_min_length 256;
     gzip_buffers 16 8k;
-    gzip_comp_level 5;
+    gzip_comp_level 9;
     gzip_proxied any;
-    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml;
-
-经过我的研究，国内大部分地区访问本站的平均速度约为0.5kb/s，人类最短反应时间是150ms，这意味着对于仅仅75b的文件大小差距就能造成可以感知的速度差异。
-
-既然我已经拥有生成好了的网页文件，接下来就是具体衡量可以使用的参数，方法很简单，确保这个参数产生的文件大小同最高参数的文件大小相差小于75。
-
-首先测试参数9：
-
-    $ gzip -c9 index.html | wc -c
-
-随后测试参数5：
-
-    $ gzip -c5 index.html | wc -c
-
-经过一番研究，要保证每个文件的压缩后大小同最高参数压缩后的大小相差小于125，至少需要使用参数5。所以在上述gzip配置中需要使用`gzip_comp_level 5`
+    gzip_types
+        text/xml application/xml application/atom+xml application/rss+xml application/xhtml+xml image/svg+xml
+        text/javascript application/javascript application/x-javascript
+        text/x-json application/json application/x-web-app-manifest+json
+        text/css text/plain text/x-component
+        font/opentype application/x-font-ttf application/vnd.ms-fontobject
+        image/x-icon;
+    gzip_disable msie6;
 
 ## SSL配置与优化
 

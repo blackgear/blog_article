@@ -53,76 +53,62 @@ Windows用户也可以从[这里](https://darknode.in/dl/FontTools.7z)直接下�
 
 一个字体由数个表（table）构成，字体的信息储存在表中。一个最基本的字体文件一定会包含以下的表：
 
-| Tag  | Name                              |
-| ---- | --------------------------------- |
-| cmap | Character to glyph mapping        |
-| head | Font header                       |
-| hhea | Horizontal header                 |
-| hmtx | Horizontal metrics                |
-| maxp | Maximum profile                   |
-| name | Naming table                      |
-| OS/2 | OS/2 and Windows specific metrics |
-| post | PostScript information            |
+* cmap: Character to glyph mapping
+* head: Font header
+* hhea: Horizontal header
+* hmtx: Horizontal metrics
+* maxp: Maximum profile
+* name: Naming table
+* OS/2: OS/2 and Windows specific metrics
+* post: PostScript information:
 
 使用TrueType曲线绘制的字体会包含如下的表：
 
-| Tag  | Name                                          |
-| ---- | --------------------------------------------- |
-| cvt  | Control Value Table                           |
-| fpgm | Font program                                  |
-| glyf | Glyph data                                    |
-| loca | Index to location                             |
-| prep | CVT Program                                   |
-| gasp | Grid-fitting/Scan-conversion (optional table) |
+* cvt: Control Value Table
+* fpgm: Font program
+* glyf: Glyph data
+* loca: Index to location
+* prep: CVT Program
+* gasp: Grid-fitting/Scan-conversion (optional table)
 
 使用PostScript曲线绘制的字体会包含如下的表：
 
-| Tag  | Name                                          |
-| ---- | --------------------------------------------- |
-| CFF  | PostScript font program (compact font format) |
-| VORG | Vertical Origin (optional table)              |
+* CFF: PostScript font program (compact font format)
+* VORG: Vertical Origin (optional table)
 
 使用SVG曲线绘制的字体会包含如下的表：
 
-| Tag | Name                                     |
-| --- | ---------------------------------------- |
-| SVG | The SVG (Scalable Vector Graphics) table |
+* SVG: The SVG (Scalable Vector Graphics) table
 
 使用Bitmap图形构成的字体会包含如下的表：
 
-| Tag  | Name                          |
-| ---- | ----------------------------- |
-| EBDT | Embedded bitmap data          |
-| EBLC | Embedded bitmap location data |
-| EBSC | Embedded bitmap scaling data  |
-| CBDT | Color bitmap data             |
-| CBLC | Color bitmap location data    |
+* EBDT: Embedded bitmap data
+* EBLC: Embedded bitmap location data
+* EBSC: Embedded bitmap scaling data
+* CBDT: Color bitmap data
+* CBLC: Color bitmap location data
 
 包含高级书法特性的字体会包含如下的表：
 
-| Tag  | Name                    |
-| ---- | ----------------------- |
-| BASE | Baseline data           |
-| GDEF | Glyph definition data   |
-| GPOS | Glyph positioning data  |
-| GSUB | Glyph substitution data |
-| JSTF | Justification data      |
-| MATH | Math layout data        |
+* BASE: Baseline data
+* GDEF: Glyph definition data
+* GPOS: Glyph positioning data
+* GSUB: Glyph substitution data
+* JSTF: Justification data
+* MATH: Math layout data
 
 包含其他特性的字体会包含如下的表：
 
-| Tag  | Name                      |
-| ---- | ------------------------- |
-| DSIG | Digital signature         |
-| hdmx | Horizontal device metrics |
-| kern | Kerning                   |
-| LTSH | Linear threshold data     |
-| PCLT | PCL 5 data                |
-| VDMX | Vertical device metrics   |
-| vhea | Vertical Metrics header   |
-| vmtx | Vertical Metrics          |
-| COLR | Color table               |
-| CPAL | Color palette table       |
+* DSIG: Digital signature
+* hdmx: Horizontal device metrics
+* kern: Kerning
+* LTSH: Linear threshold data
+* PCLT: PCL 5 data
+* VDMX: Vertical device metrics
+* vhea: Vertical Metrics header
+* vmtx: Vertical Metrics
+* COLR: Color table
+* CPAL: Color palette table
 
 对字体的修改基本上是围绕着最上方的基本表进行的，如果要修改字符形态等才需要用到之后的表。
 

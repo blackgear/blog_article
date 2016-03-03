@@ -26,15 +26,15 @@ description: 本文介绍了通过使用Nginx自带的功能，将统计数据�
 
 服务器信息：
 
-> ConoHa 1GB KVM Tokyo
-> 2 Core CPU
-> 50GB SSD
-> Debian 8.0 64bit
+* ConoHa 1GB KVM Tokyo
+* 2 Core CPU
+* 50GB SSD
+* Debian 8.0 64bit
 
 Nginx信息：
 
-> Nginx v1.9.6 Mainline version
-> deb http://nginx.org/packages/mainline/debian/ jessie nginx
+* Nginx v1.9.6 Mainline version
+* deb http://nginx.org/packages/mainline/debian/ jessie nginx
 
 Nginx自带的`userid`模块可以用于标记各个用户，而`post_action`配置项可以在Nginx收到的请求处理完成后向某处发送一个异步的Get请求，这个请求会附带原始请求的`referer`与`user-agent`，利用这两个功能的这一个，我们可以配置Nginx在页面访问后发送相关信息到Google Analytics中，其具体配置如下：
 

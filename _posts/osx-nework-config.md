@@ -9,18 +9,15 @@ description: 本文介绍了在OS X下进行从普通应用程序到命令行程
 
 本方案的基本架构如下：
 
-使用Pcap\_DNSProxy提供最佳的DNS查询结果，通过shadowsocks-libev提供顺畅的网络连接，通过polio将socks5代理转换为兼容性更好的http代理并提供一个本地http服务器，利用Mono\_Pac生成适宜的Pac文件并用polipo的本地http服务器hosts。
+使用[Pcap\_DNSProxy](https://github.com/chengr28/Pcap_DNSProxy)提供最佳的DNS查询结果，通过[shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)提供顺畅的网络连接，通过[polipo](https://github.com/jech/polipo)将socks5代理转换为兼容性更好的http代理并提供一个本地http服务器，利用[Mono\_Pac](https://github.com/blackgear/mono_pac)生成适宜的Pac文件并用[polipo](https://github.com/jech/polipo)的本地http服务器来host。
 
 本方案使用的所有程序均为开源程序，均不对除本机外的设备提供网络服务，以避免各种潜在威胁。
 
 ## 本地DNS的配置
 
-首先通过Homebrew安装Pcap\_DNSProxy：
+首先通过Homebrew安装[Pcap\_DNSProxy](https://github.com/chengr28/Pcap_DNSProxy)并修改其配置文件中的如下三项：
 
     $ brew install pcap_dnsproxy
-
-修改其配置文件中的如下三项：
-
     $ vi /usr/local/etc/pcap_DNSproxy/Config.ini
     [Listen]
     Operation Mode = Proxy
@@ -28,7 +25,7 @@ description: 本文介绍了在OS X下进行从普通应用程序到命令行程
     Local Main = 1
     Local Routing = 1
 
-修改`Operation Mode`为`Proxy`以确保只为本机提供代理域名解析请求服务，修改`Local Main`、`Local Routing`为`1`以确保国内网站获得更好的CDN解析结果。
+修改`Operation Mode`为`Proxy`以确保其只为本机提供代理域名解析请求服务，修改`Local Main`、`Local Routing`为`1`以确保国内网站获得更好的CDN解析结果。
 
 设置开机启动：
 
@@ -40,12 +37,9 @@ description: 本文介绍了在OS X下进行从普通应用程序到命令行程
 
 ## 本地网络连接的配置
 
-首先通过Homebrew安装shadowsocks-libev：
+首先通过Homebrew安装[shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)并修改配置文件，在其中加入`local`项，以确保其只为本机提供服务：
 
     $ brew install shadowsocks-libev
-
-修改配置文件，并在其中加入`local`项，以确保shadowsocks-libev只为本机提供服务：
-
     $ vi /usr/local/etc/shadowsocks-libev.json
     {
         "server":"服务器地址",
@@ -62,12 +56,10 @@ description: 本文介绍了在OS X下进行从普通应用程序到命令行程
     $ ln -sfv /usr/local/opt/shadowsocks-libev/*.plist ~/Library/LaunchAgents
     $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.shadowsocks-libev.plist
 
-随后通过Homebrew安装polipo：
+随后通过Homebrew安装[polipo](https://github.com/jech/polipo)并在`~/.polipo`新建配置文件：
 
     $ brew install polipo
-
-在`~/.polipo`新建配置文件：
-
+    $ vi ~/.polipo
     socksParentProxy = "127.0.0.1:1080"
     socksProxyType = "socks5"
     proxyAddress = "127.0.0.1"
@@ -107,7 +99,7 @@ description: 本文介绍了在OS X下进行从普通应用程序到命令行程
     export ftp_proxy=$all_proxy
     export rsync_proxy=$all_proxy
 
-通过Homebrew安装socat，并修改`~/.ssh/config`，使ssh连接通过代理进行连接：
+通过Homebrew安装[socat](http://www.dest-unreach.org/socat/)并修改`~/.ssh/config`，使ssh连接通过代理进行连接：
 
     $ brew install socat
     $ vi ~/.ssh/config

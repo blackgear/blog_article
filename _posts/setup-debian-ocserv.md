@@ -9,17 +9,17 @@ description: 本文介绍了在Debian下配置Ocserv并启用证书登录与路�
 
 服务器信息：
 
-> Ramnode 128MB CVZ SEA
-> Debian 7.0 32bit minimal
-> 1 Core CPU
-> 128/64 MB RAM/VSwap
-> 80/500 GB Storage/Bandwidth
-> IPv4 addr x1
-> IPv6 addr x16
+* Ramnode 128MB CVZ SEA
+* Debian 7.0 32bit minimal
+* 1 Core CPU
+* 128/64 MB RAM/VSwap
+* 80/500 GB Storage/Bandwidth
+* IPv4 addr x1
+* IPv6 addr x16
 
 证书：
 
-> SSL证书 x1
+* SSL证书 x1
 
 ## 基本思路
 

@@ -7,7 +7,7 @@ description: 本文介绍了如何使用ttx修改字体的cmap表，以增强字
 
 ## 基本信息
 
-CMap表是用于将字符编码映射到字形索引的表，字体渲染过程中，首先会获得要渲染的字符的字符Unicode编码，随后根据CMap表找到其对应的字形的索引值，再根据索引值读取对应字形的数据并进行渲染。其具体信息可以参考[Apple文档](https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6cmap.html)或[Windows文档](https://www.microsoft.com/typography/otspec/cmap.htm)。
+CMap表是用于将字符编码映射到字形索引的表，字体渲染过程中，首先会获得要渲染的字符的字符Unicode编码，随后根据CMap表找到其对应的字形的索引值，再根据索引值读取对应字形的数据并进行渲染。其具体信息可以参考[Apple文档](https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6cmap.html)和[Windows文档](https://www.microsoft.com/typography/otspec/cmap.htm)。
 
 ## CMap表细节解说
 
@@ -46,12 +46,10 @@ CMap表中通常包括数个子表，比如上面的例子中就有两个子表�
 
 format platformID platEncID这三组值指定了CMap表数据的编码方式与顺序，常见的字体通常具有多个子表。幸运的是，它们通常只有4个常见的组合：
 
-| format | platformID | platEncID | Description   |
-| ------ | ---------- | --------- | ------------- |
-|      4 |          0 |         3 | Unicode UCS-2 |
-|      4 |          3 |         1 | Windows UCS-2 |
-|     12 |          0 |         4 | Unicode UCS-4 |
-|     12 |          3 |        10 | Windows UCS-4 |
+* cmapFormat=4 platformID=0 platEncID=3: Unicode UCS-2
+* cmapFormat=4 platformID=3 platEncID=1: Windows UCS-2
+* cmapFormat=12 platformID= 0 platEncID=4: Unicode UCS-4
+* cmapFormat=12 platformID= 3 platEncID=10: Windows UCS-4
 
 首先，format 4只支持65536个字符，format 12是format 4的超集，支持2147483648个字符。英文字体通常只使用format 4，CJK字体则常常会用到format 12。在使用format 12格式时仍然需要保留一个对应的format 4格式的子表，否则Windows下将出现字体兼容性问题。
 
@@ -59,28 +57,27 @@ platformID 0表示Unicode平台，而platformID 3表示Windows平台，大多数
 
 platEncID与platformID有关，表示在对应平台下的具体编码方式。其具体取值如下：
 
-| platformID | platEncID | Description                                                   |
-| ---------- | --------- | ------------------------------------------------------------- |
-|          0 |         0 | Default semantics                                             |
-|          0 |         1 | Version 1.1 semantics                                         |
-|          0 |         2 | ISO 10646 1993 semantics (deprecated)                         |
-|          0 |         3 | Unicode 2.0 or later semantics (BMP only)                     |
-|          0 |         4 | Unicode 2.0 or later semantics (non-BMP characters allowed)   |
-|          0 |         5 | Unicode Variation Sequences                                   |
-|          0 |         6 | Full Unicode coverage (used with type 13.0 cmaps by OpenType) |
-|          3 |         0 | Symbol                                                        |
-|          3 |         1 | Unicode BMP (UCS-2)                                           |
-|          3 |         2 | ShiftJIS                                                      |
-|          3 |         3 | PRC                                                           |
-|          3 |         4 | Big5                                                          |
-|          3 |         5 | Wansung                                                       |
-|          3 |         6 | Johab                                                         |
-|          3 |         7 | Reserved                                                      |
-|          3 |         8 | Reserved                                                      |
-|          3 |         9 | Reserved                                                      |
-|          3 |         10| Unicode UCS-4                                                 |
+* platformID=0 platEncID=0: Default semantics
+* platformID=0 platEncID=1: Version 1.1 semantics
+* platformID=0 platEncID=2: ISO 10646 1993 semantics (deprecated)
+* platformID=0 platEncID=3: Unicode 2.0 or later semantics (BMP only)
+* platformID=0 platEncID=4: Unicode 2.0 or later semantics (non-BMP characters allowed)
+* platformID=0 platEncID=5: Unicode Variation Sequences
+* platformID=0 platEncID=6: Full Unicode coverage (used with type 13.0 cmaps by OpenType)
 
-这些组合当中，0-3与3-1等价，0-4与3-10等价，表示相同的编码方式与顺序。
+* platformID=3 platEncID=0: Symbol
+* platformID=3 platEncID=1: Unicode BMP (UCS-2)
+* platformID=3 platEncID=2: ShiftJIS
+* platformID=3 platEncID=3: PRC
+* platformID=3 platEncID=4: Big5
+* platformID=3 platEncID=5: Wansung
+* platformID=3 platEncID=6: Johab
+* platformID=3 platEncID=7: Reserved
+* platformID=3 platEncID=8: Reserved
+* platformID=3 platEncID=9: Reserved
+* platformID=3 platEncID=10: Unicode UCS-4
+
+这些组合当中，cmapFormat=4 platformID=0 platEncID=3与cmapFormat=4 platformID=3 platEncID=1等价，cmapFormat=12 platformID=0 platEncID=4与cmapFormat=12 platformID=3 platEncID=10等价，表示相同的编码方式与顺序。
 
 子表内容由许多条记录构成，比如：
 
@@ -104,7 +101,7 @@ PingFang是Apple公司在OS X 10.11中新加入的字体，在最初的DP1版本
 
  由于缺乏platformID为3的子表，Windows将其视为了无效的字体文件。
 
-根据前面的介绍，将DP2之后的字体文件修改为兼容Windows的字体文件的方法就是加入对应的表了，不过我们有个偷懒的办法：将0-3直接改成3-1，将0-4直接改为3-10，由于这两组对应的编码方式与顺序完全相同，所以我们并不需要修改后续的子表内容就能使这个字体在Win下可用。
+根据前面的介绍，将DP2之后的字体文件修改为兼容Windows的字体文件的方法就是加入对应的表了，不过我们有个偷懒的办法：将cmapFormat=4 platformID=0 platEncID=3直接改成cmapFormat=4 platformID=3 platEncID=1，将cmapFormat=12 platformID=0 platEncID=4直接改为cmapFormat=12 platformID=3 platEncID=10，由于这两组对应的编码方式与顺序完全相同，所以我们并不需要修改后续的子表内容就能使这个字体在Win下可用。
 
 先使用otc2otf将PingFang.ttc解包，随后在OS X下执行：
 
@@ -139,7 +136,7 @@ Hiragino Sans也是OS X 10.11中新引入的字体。它的前身是Hiragino Kak
     …
         <map code="0x2f920" name="cid07839"/><!-- ???? -->
 
-之前提到过，format=4 platformID=3 platEncID=1的子表其实就是format=12 platformID=3 platEncID=10的子集，确切的说是其0x0000至0xffff的部分，那么加入新的子表就很简单了。
+之前提到过，cmapFormat=4 platformID=3 platEncID=1这个子表其实就是cmapFormat=12 platformID=3 platEncID=10这个子表的子集，确切的说是其0x0000至0xffff的部分，那么加入新的子表就很简单了。
 
 把map code从0x0000一直到0xffff的段落全部复制下来，粘贴到新加入的format 4的子表之后：
 
