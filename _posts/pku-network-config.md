@@ -9,19 +9,19 @@ description: 本文介绍了在PKU的校园网IPv6环境下使用OpenWrt路由�
 
 服务器信息：
 
-* ConoHa 1GB KVM Tokyo
-* 2 Core CPU
-* 50GB SSD
-* Debian 8.0 64bit
-* IPv4 addr x1
-* IPv6 addr x17
+- ConoHa 1GB KVM Tokyo
+- 2 Core CPU
+- 50GB SSD
+- Debian 8.0 64bit
+- IPv4 addr x1
+- IPv6 addr x17
 
 路由器信息：
 
-* Mercury 4530R OpenWrt Chaos Calmer 15.05
-* 560MHz CPU
-* 16M Flash
-* Ar71xx Generic
+- Mercury 4530R OpenWrt Chaos Calmer 15.05
+- 560MHz CPU
+- 16M Flash
+- Ar71xx Generic
 
 ## 服务器的配置
 
