@@ -1,8 +1,8 @@
-title: IP隧道的介绍与校园网内的应用
+title: 内核隧道的介绍与校园网内的应用
 date: 2016-03-04 22:00:00
 categories: network
-tags: [ip, tunnel, debian]
-description: 本文介绍了在PKU的校园网IPv6环境下使用IPIP6隧道免费访问所有网站的方案。
+tags: [kernel, tunnel, debian]
+description: 本文介绍了使用IP隧道、SIT隧道、GRE隧道的命令与操作，并给出了校园网内的实例。
 ---
 
 ## 相关说明
@@ -25,6 +25,8 @@ description: 本文介绍了在PKU的校园网IPv6环境下使用IPIP6隧道免�
 
 ## 隧道基础知识
 
+Linux内核支持的隧道主要有IP隧道、SIT隧道、GRE隧道三种，L2TPv3隧道比较少见，本文将不做介绍。
+
 IP隧道是一种比较简单的隧道，其原理就是直接在原始的IP包之前加入一个新的IP报文头指向对端，将原有的整个IP包作为新的IP包的Payload。对端收到这个IP包之后取出Payload部分进一步处理。
 
 由于存在IPv4和IPv6两种协议，所以IP隧道也就对应地产生了四种类型：
@@ -34,7 +36,7 @@ IP隧道是一种比较简单的隧道，其原理就是直接在原始的IP包�
 - IPIP6隧道：将IPv4包封装在IPv6包中
 - IP6IP6隧道：将IPv6包封装在IPv6包中
 
-GRE隧道可以视为对IP隧道的增强，加入了一些额外的字节以提供GRE Key等高级功能，对隧道内传输的报文没有限制，根据外层使用的包的类型可以分为两类：
+SIT隧道的功能与原理与IP隧道比较接近，这里就姑且把它们归类在一起。GRE隧道可以视为对IP隧道的增强，加入了一些额外的字节以提供GRE Key等高级功能，对隧道内传输的报文没有限制，根据外层使用的包的类型可以分为两类：
 
 - GRE隧道：将IPv4或者IPv6包封装在IPv4包中
 - IP6GRE隧道：将IPv4或者IPv6包封装在IPv6包中
