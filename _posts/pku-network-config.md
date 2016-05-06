@@ -168,7 +168,8 @@ description: 本文介绍了在PKU的校园网IPv6环境下使用OpenWrt路由�
 随后修改dnsmasq的配置，将ChinaDNS设置为dnsmasq的上游服务器：
 
     $ uci set dhcp.@dnsmasq[-1].noresolv='1'
-    $ uci set dhcp.@dnsmasq[-1].server='127.0.0.1#5353'
+    $ uci delete dhcp.@dnsmasq[-1].server
+    $ uci add_list dhcp.@dnsmasq[-1].server='127.0.0.1#5353'
     $ uci commit dhcp
 
 配置校园网自动登录，修改`/etc/rc.local`：

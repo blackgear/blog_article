@@ -8,4 +8,4 @@ date: 2015-05-01 12:00:00
 
 过去我最喜爱的游戏是[Osu!](https://osu.ppy.sh/u/BlackGear)，总计有一万两千多次游戏记录，两百余万次键盘敲击。现在我最喜爱的游戏是Ingress，我加入了Resistence一方，目前等级是L10。
 
-你可以在[Github](https://github.com/blackgear)上找到我的作品，通过[Twitter](https://twitter.com/atomhelix)或者是[Google+](https://plus.google.com/100525412413357066353/)来关注我，通过[Keybase](https://keybase.io/atomhelix)或者是[Telegram](https://telegram.me/atomhelix)来联系我，使用我的[PGP公钥](/about/pgp.asc)或者是[S/MIME证书](/about/smime.pem)来进行通讯加密。
+你可以在[Github](https://github.com/blackgear)上找到我的作品，通过[Twitter](https://twitter.com/atomhelix)或者是[Google+](https://plus.google.com/100525412413357066353/)来关注我，通过[Keybase](https://keybase.io/atomhelix)或者是[Telegram](https://telegram.me/atomhelix)来联系我，使用我的[PGP公钥](/about/pgp.asc)来进行通讯加密。
