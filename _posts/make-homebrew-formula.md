@@ -42,14 +42,14 @@ brew将使用`$EDITOR`变量中指定的编辑器打开对应的ruby脚本，要
 
 ## 提交已有软件包的更新
 
-首先访问[Homebrew的项目主页](https://github.com/Homebrew/Homebrew)，随后点击fork。本文已经假设你拥有一个Github帐号，并且拥有一些基本的git使用经验，如果你没有，还是多谷歌吧。
+首先访问[Homebrew-Core的项目主页](https://github.com/Homebrew/homebrew-core)，随后点击fork。本文已经假设你拥有一个Github帐号，并且拥有一些基本的git使用经验，如果你没有，还是多谷歌吧。
 
 执行命令：
 
     $ brew update
-    $ cd $(brew --repository)
+    $ cd $(brew --repo homebrew/core)
     $ git checkout -b shadowsocks
-    $ git add Library/Formula/shadowsocks-libev.rb
+    $ git add Formula/shadowsocks-libev.rb
     $ git commit
 
 我们首先将Homebrew更新到了最新版本，然后切换到了Homebrew的本地根目录，随后创建并切换到了一个名叫`shadowsocks`的branch，添加了新的脚本文件修改记录，最后进行commit。
@@ -58,9 +58,9 @@ Homebrew推荐的commit message style是非常简洁的：只需要软件包名�
 
 将这个branch push到自己fork的Homebrew下：
 
-    $ git push git@github.com:Github用户名/Homebrew.git shadowsocks
+    $ git push https://github.com/Github用户名/homebrew-core/ shadowsocks
 
-最后回到[Homebrew的项目主页](https://github.com/Homebrew/Homebrew)并提交一个pull request，title同样使用`shadowsocks-libev 2.2.0`即可。
+最后回到[Homebrew-Core的项目主页](https://github.com/Homebrew/homebrew-core)并提交一个pull request，title同样使用`shadowsocks-libev 2.2.0`即可。
 
 我们只需要等待这个更新被接收即可。
 
