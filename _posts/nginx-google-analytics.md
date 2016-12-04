@@ -20,7 +20,8 @@ description: 本文介绍了通过使用Nginx自带的功能，将统计数据�
 
 1. 只需考虑服务器到Google Analytics的速度，不影响客户端的体验。
 2. 统计数据真实准确，不受干扰与屏蔽。
-3. 配置简单方便，不需要额外安装Nodejs等软件，使用Nginx自身的功能即可完成。
+3. 用户使用的语言可以通过浏览器发送的`Accept-Language`获得用户设定的Preferred language，而js脚本只能获得浏览器安装时选择的语言，这是一个[Bug/Feature](http://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference)。
+3. 配置简单方便，不需要额外安装Nodejs等程序和包管理器，使用Nginx自身的功能即可完成。
 
 ## 配置说明
 
@@ -36,31 +37,49 @@ Nginx信息：
 * Nginx v1.9.6 Mainline version
 * deb http://nginx.org/packages/mainline/debian/ jessie nginx
 
-Nginx自带的`userid`模块可以用于标记各个用户，而`post_action`配置项可以在Nginx收到的请求处理完成后向某处发送一个异步的Get请求，这个请求会附带原始请求的`referer`与`user-agent`，利用这两个功能的这一个，我们可以配置Nginx在页面访问后发送相关信息到Google Analytics中，其具体配置如下：
+Nginx默认自带的`userid`模块可以用于标记各个用户，而`post_action`配置项可以在Nginx收到的请求处理完成后向某处发送一个异步的Get请求，这个请求会附带原始请求的`referer`与`user-agent`，利用这两个功能的这一个，我们可以配置Nginx在页面访问后发送相关信息到Google Analytics中，其具体配置如下：
 
-    userid on;
-    userid_name cid;
-    userid_domain 你的域名;
-    userid_path /;
-    userid_expires max;
+    http {
+        map $http_accept_language $lang {
+            ~^([a-zA-Z-]*) $1;
+        }
 
-    location @tracker {
-        internal;
-        proxy_method GET;
-        proxy_pass https://ssl.google-analytics.com/collect?v=1&tid=UA-XXXXXXXX-Y&$uid_set$uid_got&t=pageview&dh=$host&dp=$uri&uip=$remote_addr&dr=$http_referer&z=$msec;
-        proxy_set_header User-Agent $http_user_agent;
-        proxy_pass_request_headers off;
-        proxy_pass_request_body off;
+        server {
+            userid on;
+            userid_name cid;
+            userid_domain 你的域名;
+            userid_path /;
+            userid_expires max;
+
+            location @tracker {
+                internal;
+                proxy_method GET;
+                proxy_pass https://ssl.google-analytics.com/collect?v=1&tid=UA-XXXXXXXX-Y&$uid_set$uid_got&t=pageview&dh=$host&dp=$uri&uip=$remote_addr&dr=$http_referer&ul=$lang&z=$msec;
+                proxy_set_header User-Agent $http_user_agent;
+                proxy_pass_request_headers off;
+                proxy_pass_request_body off;
+            }
+
+            location / {
+                try_files $uri $uri/ =404;
+                post_action @tracker;
+            }
+        }
+
     }
 
-    location / {
-        try_files $uri $uri/ =404;
-        post_action @tracker;
-    }
 
 `userid`模块将会在用户访问时检查cookies中是否有`cid`项，如果没有`cid`项，则会在返回的header中加入`set-cookies`头标记这个用户，并将`$uid_set`变量设定为`cid=XXXXXX`这一形式，将`$uid_got`变量设定为空。如果有`cid`项，则将`$uid_got`变量设定为`cid=XXXXXX`这一形式，将`$uid_set`变量设定为空。于是在`@tracker`部分，上述变量会将`$uid_set$uid_got`填充为`cid=XXXXXX`。
 
-实际向Google Analytics提交数据时，`tid`为跟踪ID，即类似`UA-123456-1`的用于区别是要向哪个 Google Analytics（分析）媒体资源发送数据的参数，可以从Google Analytics获得；`cid`即客户端ID，以cookies的形式用于区分和追踪用户，这里通过`userid`模块完成；`t`、`dh`、`dp`参数用于标记事件类型，访问的网站与访问的路径；`uip`参数即用户的IP地址，用于追踪用户所处地区等信息；`dr`参数即用户的referer，用于追踪用户的来源信息；`z`参数没有实际意义，仅仅用于附加一个时间戳以防止向Google Analytics提交数据时，这个请求被缓存。
+实际向Google Analytics提交数据时：
+
+- `tid`为跟踪ID，即类似`UA-123456-1`的用于区别是要向哪个 Google Analytics（分析）媒体资源发送数据的参数，可以从Google Analytics获得；
+- `cid`即客户端ID，以cookies的形式用于区分和追踪用户，这里通过`userid`模块完成；
+- `t`、`dh`、`dp`参数用于标记事件类型，访问的网站与访问的路径；
+- `uip`参数即用户的IP地址，用于追踪用户所处地区等信息；
+- `dr`参数即用户的referer，用于追踪用户的来源信息；
+- `ul`参数即用户的语言，通过Map操作从`Accept-Language`中提取；
+- `z`参数没有实际意义，仅仅用于附加一个时间戳以防止向Google Analytics提交数据时，这个请求被缓存。
 
 ## 注意事项
 
