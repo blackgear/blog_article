@@ -1,5 +1,6 @@
 title: 在AlpineLinux下编译并静态链接程序
-date: 2016-12-05 00:00:00
+date: 2016-12-05T00:05:00+08:00
+updated: 2016-12-06T00:10:00+08:00
 categories: linux
 tags: []
 description:
