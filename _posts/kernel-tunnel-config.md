@@ -1,5 +1,6 @@
 title: 内核隧道的介绍与校园网内的应用
-date: 2016-03-04 22:00:00
+date: 2016-03-04T22:00:00+08:00
+updated: 2016-12-01T00:00:00+08:00
 categories: network
 tags: [kernel, tunnel, debian]
 description: 本文介绍了使用IP隧道、SIT隧道、GRE隧道的命令与操作，并给出了校园网内的实例。

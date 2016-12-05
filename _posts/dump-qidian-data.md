@@ -1,5 +1,6 @@
 title: 提取起点上的小说月票榜信息
-date: 2015-03-06 01:30:00
+date: 2015-03-06T01:30:00+08:00
+updated: 2015-11-23T18:50:00+08:00
 categories: network
 tags: [json, cdn, dig]
 description: 本文介绍了如何寻找开放的AJAX接口，并使用命令行脚本批量下载数据的方法。

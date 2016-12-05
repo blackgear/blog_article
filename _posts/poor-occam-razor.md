@@ -1,5 +1,6 @@
 title: 奥卡姆剃刀原理的贫瘠与困窘
-date: 2015-08-30 04:00:00
+date: 2015-08-30T04:00:00+08:00
+updated: 2015-11-23T19:00:00+08:00
 categories: philosophy
 tags: [occam, razor, practice]
 description: 本文探讨了在奥卡姆剃刀原理在纯哲学范围以外的应用中的种种缺陷与不足。

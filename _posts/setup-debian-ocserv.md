@@ -1,5 +1,6 @@
 title: Ocserv在Debian下的安装与配置指南
-date: 2014-12-18 06:40:35
+date: 2014-12-18T06:40:00+08:00
+updated: 2016-03-04T22:00:00+08:00
 categories: network
 tags: [ocserv, debian, anyconnect]
 description: 本文介绍了在Debian下配置Ocserv并启用证书登录与路由分流等优化措施的方案。
