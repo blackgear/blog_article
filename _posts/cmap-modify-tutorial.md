@@ -3,7 +3,7 @@ date: 2015-07-10T02:00:00+08:00
 updated: 2016-01-19T14:40:00+08:00
 categories: font
 tags: [font, ttx, cmap]
-description: 本文介绍了如何使用ttx修改字体的cmap表，以增强字体在不同操作系统中的兼容性。
+description: 本文介绍了如何使用ttx修改字体的cmap表，以增强字体在不同操作系统中的兼容性
 ---
 
 ## 基本信息

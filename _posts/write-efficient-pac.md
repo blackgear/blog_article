@@ -3,7 +3,7 @@ date: 2015-02-12T14:00:00+08:00
 updated: 2015-11-26T16:15:00+08:00
 categories: network
 tags: [pac, openwrt, javascript]
-description: 本文介绍了编写具备高性能和小体积的基于IP进行分流的Pac脚本的方法。
+description: 本文介绍了编写具备高性能和小体积的基于IP进行分流的Pac脚本的方法
 ---
 
 ## 相关说明

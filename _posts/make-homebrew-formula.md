@@ -3,7 +3,7 @@ date: 2015-04-04T00:20:00+08:00
 updated: 2016-07-21T21:10:00+08:00
 categories: network
 tags: [homebrew, formula, debug]
-description: 本文介绍了更新以及创建一个Homebrew里的软件包，并进行调试和发布的方法。
+description: 本文介绍了更新以及创建一个Homebrew里的软件包，并进行调试和发布的方法
 ---
 
 ## 相关说明

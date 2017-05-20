@@ -3,7 +3,7 @@ date: 2015-07-25T22:00:00+08:00
 updated: 2016-05-07T00:40:00+08:00
 categories: network
 tags: [shadowvpn, chinadns, openwrt]
-description: 本文介绍了在PKU的校园网IPv6环境下使用OpenWrt路由器配置自动登录与科学上网的方法。
+description: 本文介绍了在PKU的校园网IPv6环境下使用OpenWrt路由器配置自动登录与科学上网的方法
 ---
 
 ## 相关说明

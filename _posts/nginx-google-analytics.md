@@ -3,7 +3,7 @@ date: 2015-10-30T17:30:00+08:00
 updated: 2016-12-01T00:20:00+08:00
 categories: network
 tags: [nginx, google, analytics]
-description: 本文介绍了通过使用Nginx自带的功能，将统计数据发送到Google Analytics的方法。
+description: 本文介绍了通过使用Nginx自带的功能，将统计数据发送到Google Analytics的方法
 ---
 
 ## 相关说明

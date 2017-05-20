@@ -3,7 +3,7 @@ date: 2014-11-24T21:10:00+08:00
 updated: 2015-11-23T19:00:00+08:00
 categories: chemistry
 tags: [ncho, synthetic, organic]
-description: 本文介绍了对1999年NchO实验的呋喃丙烯酸制备流程进行修改，以提高产量和纯度的方法。
+description: 本文介绍了对1999年NchO实验的呋喃丙烯酸制备流程进行修改，以提高产量和纯度的方法
 ---
 
 ## 前言：

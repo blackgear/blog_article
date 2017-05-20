@@ -3,7 +3,7 @@ date: 2014-12-18T06:40:00+08:00
 updated: 2016-03-04T22:00:00+08:00
 categories: network
 tags: [ocserv, debian, anyconnect]
-description: 本文介绍了在Debian下配置Ocserv并启用证书登录与路由分流等优化措施的方案。
+description: 本文介绍了在Debian下配置Ocserv并启用证书登录与路由分流等优化措施的方案
 ---
 
 ## 相关说明

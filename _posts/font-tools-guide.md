@@ -3,7 +3,7 @@ date: 2015-06-26T23:30:00+08:00
 updated: 2016-01-19T11:30:00+08:00
 categories: font
 tags: [fonttools, ttx, modify]
-description: 本文介绍了在不同系统上安装ttx系列软件，并使用ttx进行字体修改的初步思路。
+description: 本文介绍了在不同系统上安装ttx系列软件，并使用ttx进行字体修改的初步思路
 ---
 
 ## 相关说明
